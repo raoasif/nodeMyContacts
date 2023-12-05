@@ -1,0 +1,8 @@
+Tutorial link: https://www.youtube.com/watch?v=H9M02of22z4
+
+
+1- install (npm init)
+2- install express
+3- added env file (first installed package (dotenv) for it.)
+4- thunder client (HTTP client llike postman have nuilt in support in VScode)
+5- add routes for contacts and try test calls on TC (thunder client)
