@@ -32,7 +32,6 @@ const getContact = asyncHandler(async (req, res) => {
 //@access public
 
 const createContact = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
     res.status(400);
@@ -81,13 +80,13 @@ const deleteContact = asyncHandler(async (req, res) => {
     throw new Error("Id is invalid.");
   }
 
-  const contact = await Contact.findById(req.params.id);
+  const contact = await Contact.findByIdAndDelete(req.params.id);
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
   }
-  await Contact.deleteOne();
-  res.status(200).json(contact);
+  res.status(200).json({ message: "Contact deleted successfully" });
+  // res.status(200).json(contact);
 });
 
 module.exports = {
