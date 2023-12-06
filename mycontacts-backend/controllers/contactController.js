@@ -14,9 +14,12 @@ const getContacts = asyncHandler(async (req, res) => {
 //@access public
 
 const getContact = asyncHandler(async (req, res) => {
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error("Id is invalid.");
+  }
+
   const contact = await Contact.findById(req.params.id);
-  //   console.log("contact: ", contact);
-  //   res.status(200).json(contact);
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
@@ -49,7 +52,23 @@ const createContact = asyncHandler(async (req, res) => {
 //@access public
 
 const updateContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Update contact for ${req.params.id}` });
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error("Id is invalid.");
+  }
+
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Contact not found");
+  }
+
+  const updatedContact = await Contact.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.status(200).json(updatedContact);
 });
 
 //@desc Delete contact
@@ -57,7 +76,18 @@ const updateContact = asyncHandler(async (req, res) => {
 //@access public
 
 const deleteContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Delete contact for ${req.params.id}` });
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error("Id is invalid.");
+  }
+
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Contact not found");
+  }
+  await Contact.deleteOne();
+  res.status(200).json(contact);
 });
 
 module.exports = {
